@@ -1,0 +1,112 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "io.zenandroid.greenfieldtemplate"
+        minSdkVersion 22
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "BASE_URL", '"https://api.tfl.gov.uk/"'
+
+        // Please put in the APP_ID and APP_KEY here. Please note it needs to be enclosed in both
+        // single AND double quotes (e.g. '"111111"')
+        buildConfigField "String", "TFL_APP_ID", '"change_me"'
+        buildConfigField "String", "TFL_APP_KEY", '"change_me"'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    flavorDimensions "backend"
+
+    // If you need to add more flavors, consider using flavor dimensions.
+    productFlavors {
+        offline {
+            // At some point you might want to uncomment the next line
+            // applicationIdSuffix = ".mock"
+            dimension "backend"
+            resValue "string", "app_name", "TFL Road Status (offline flavor!!!)"
+        }
+        connected {
+            dimension "backend"
+            resValue "string", "app_name", "TFL Road Status"
+        }
+    }
+
+    // Remove offlineRelease as it's not needed.
+    android.variantFilter { variant ->
+        if (variant.buildType.name == 'release' && variant.getFlavors().get(0).name == 'offline') {
+            variant.setIgnore(true)
+        }
+    }
+
+}
+
+kapt {
+    generateStubs = true
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation 'com.google.android.material:material:1.1.0'
+
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation "io.reactivex.rxjava2:rxjava:2.2.10"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+
+    implementation "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
+    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0"
+
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
+
+    implementation 'com.google.dagger:dagger:2.12'
+    kapt 'com.google.dagger:dagger-compiler:2.12'
+
+    testImplementation 'junit:junit:4.12'
+
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1"
+    testImplementation "org.hamcrest:hamcrest-all:1.3"
+
+    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.12'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
+}
