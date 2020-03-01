@@ -1,4 +1,4 @@
-# TFL Text
+# TFL Road Status
 
 This is an app that consumes the API from TFL to display the status of a road in London.
 
@@ -6,7 +6,7 @@ This is an app that consumes the API from TFL to display the status of a road in
 * RxJava2
 * Dagger2
 * MVP architecture (with pure Kotlin presenter for quick JUnit tests)
-* Kotlin extensions
+* Android Kotlin extensions
 * JUnit tests (with Mockito)
 * UI tests with Espresso (run on offlineDebug variant!)
 * Offline and connected variants (for offline work and tests)
@@ -14,7 +14,7 @@ This is an app that consumes the API from TFL to display the status of a road in
 ## TFL keys
 
 In order to run the app, please replace the placeholder APP_ID and APP_KEY fields in the `build.gradle`
-files with your own app id and key. Please note the... interesting syntax in which the string needs to be
+files with your own app id and key. Please note the syntax: the strings need to be
 wrapped by both single quotes and double quotes like this:
 
 ```
@@ -25,7 +25,7 @@ buildConfigField "String", "TFL_APP_KEY", '"change_me"'
 ## Offline vs connected flavors
 
 Please note which variant you are running. Offline variant is meant for tests and development while
-offline. The data is mocked so it will always respond with "A2" for the road name that is not "ERROR_ROAD"
+offline. The data is mocked so it will always respond with "A2" for any road ID that is not "ERROR_ROAD"
 (for which an error is displayed). You probably want the online version for playing around with the app.
 
 ## Running tests
@@ -36,6 +36,10 @@ only want to make sure you're running them in offline mode:
 
 ```./gradlew testOfflineDebug```
 ```./gradlew connectedOfflineDebugAndroidTest```
+
+## Architecture
+
+This is a basic MVP implementation.
 
 ![](https://cdn.rawgit.com/acristescu/GreenfieldTemplate/86c6e7a/architecture.svg)
 
